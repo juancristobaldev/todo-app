@@ -1,0 +1,122 @@
+@mixin dflexcenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+$breakpoints: (
+  sm: 300px,
+  sm-md: 400px,
+  md-sm: 500px,
+  md: 768px,
+  md-md-lg: 824px,
+  md-md: 900px,
+  sm-lg: 1100px,
+  lg: 1224px,
+  lg-lg: 1424px,
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+}
+form.formModal {
+  box-shadow: 3px 3px 15px rgba($color: #000000, $alpha: 0.2);
+  display: grid;
+  grid-template: repeat(3, 10vh) / repeat(2, 50%);
+  box-shadow: 2px 2px 10px rgba($color: #000000, $alpha: 0.4);
+  width: 90%;
+  background: white;
+  border-radius: 0;
+  z-index: 3;
+  label {
+    color: #032c88;
+    grid-area: 1 / 1 / 2 / 3;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    @include dflexcenter();
+  }
+  .divInput {
+    @include dflexcenter();
+    flex-direction: column;
+    grid-area: 2 / 1 / 3 / 3;
+    input {
+      outline: none;
+      transition: 0.5s;
+      border: 0.25px solid rgba($color: black, $alpha: 0.5);
+      width: 85%;
+      height: 50%;
+      border-radius: 0.25rem;
+      text-align: center;
+      color: rgba($color: black, $alpha: 0.5);
+      &::placeholder {
+        color: rgba($color: black, $alpha: 0.5);
+      }
+      &:hover {
+        border: 1px solid #5991fc;
+      }
+    }
+  }
+  .divButton {
+    @include dflexcenter();
+
+    .onSubmit,
+    .onCancel {
+      font-weight: bold;
+      font-size: 1rem;
+      font-weight: 200;
+      border: 0;
+      width: 80%;
+      height: 45%;
+      transition: 0.75s;
+    }
+
+    .onCancel {
+      color: #5991fc;
+      background-color: transparent;
+      &:hover {
+        background-color: rgba($color: #000000, $alpha: 0.2);
+        color: white;
+      }
+    }
+    .onSubmit {
+      color: white;
+      font-weight: 200;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+  .divError {
+    grid-area: 4 / 1 / 5 / 3;
+    p {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+  @include media-up(sm-md) {
+    width: 80%;
+  }
+  @include media-up(md-sm) {
+    width: 60%;
+  }
+  @include media-up(md) {
+    width: 50%;
+  }
+  @include media-up(md-md-lg) {
+    width: 45%;
+  }
+  @include media-up(md-md) {
+    width: 40%;
+  }
+  @include media-up(sm-lg) {
+    width: 35%;
+  }
+  @include media-up(lg) {
+    width: 30%;
+  }
+  @include media-up(lg-lg) {
+  }
+}

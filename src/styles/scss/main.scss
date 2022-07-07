@@ -1,0 +1,36 @@
+$breakpoints: (
+  sm: 300px,
+  md-sm: 500px,
+  md: 768px,
+  md-md: 900px,
+  lg: 1224px,
+  lg-lg: 1424px,
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+}
+
+main {
+  display: grid;
+  @include media-up(sm) {
+    grid-template: 27.5vh 10vh 50vh 12.5vh / 100%;
+  }
+  @include media-up((md-sm)) {
+    grid-template: 25vh 10vh 50vh 15vh / 15% 70% 15%;
+  }
+  @include media-up((md)) {
+    grid-template: 25vh 10vh 50vh 15vh / 25% 50% 25%;
+  }
+  @include media-up((md-md)) {
+    grid-template: 25vh 10vh 50vh 15vh / 30% 40% 30%;
+  }
+  @include media-up((lg)) {
+    grid-template: 25vh 10vh 50vh 15vh / 35% 30% 35%;
+  }
+  @include media-up((lg-lg)) {
+    grid-template: 25vh 10vh 50vh 15vh / 37.5% 25% 37.5%;
+  }
+}

@@ -1,0 +1,18 @@
+@mixin displayflex-aligncenter {
+  display: flex;
+  align-items: center;
+}
+@mixin displayflex-justify-center {
+  display: flex;
+  justify-content: center;
+}
+@mixin displayflex-justifyaround-aligncenter {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+@mixin displayflex-justifycontent-center-aligncenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

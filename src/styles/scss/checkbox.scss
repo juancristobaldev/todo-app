@@ -1,0 +1,18 @@
+@mixin checkbox {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  transition: 0.25s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0px 0px 5px rgba($color: #000000, $alpha: 0.25);
+}
+
+.checkBoxOff {
+  @include checkbox();
+}
+.checkBoxOn {
+  @include checkbox();
+  background-color: rgb(32, 87, 209);
+}

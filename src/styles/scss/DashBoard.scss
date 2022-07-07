@@ -1,0 +1,141 @@
+$colorbiopacity: #cfb5ff;
+$breakpoints: (
+  sm: 300px,
+  md-sm: 500px,
+  md: 768px,
+  md-md: 900px,
+  lg: 1224px,
+  lg-lg: 1424px,
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+}
+
+@mixin displayflexjustifycenteraligncenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin displayflexjustifyendaligncenter {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.HeaderDash {
+  background-color: #8662e8;
+  display: grid;
+  color: white;
+  grid-template: 7.5vh repeat(2, 10vh) / 50% 50%;
+  box-shadow: 0rem 0.25rem 0.5rem rgba($color: #000000, $alpha: 0.3);
+  background-image: url("../../../public/IMG-0705.jpg");
+  background-size: cover;
+  background-position-y: 50%;
+  .frontBackground {
+    position: absolute;
+    height: calc(7.5vh + 20vh);
+    width: 100%;
+    background-color: #032c88;
+    opacity: 40%;
+  }
+  .HeaderTodo,
+  .HeaderDate,
+  .HeaderUser,
+  .HeaderTodoComplete {
+    @include displayflexjustifycenteraligncenter();
+    z-index: 1;
+  }
+  .HeaderTodo {
+    letter-spacing: 2.5px;
+  }
+  .HeaderDate {
+    grid-area: 1 / 2 / 2 / 3;
+    padding-right: 1rem;
+  }
+  .HeaderUser {
+    grid-area: 2 / 1 / 3 / 3;
+    padding-left: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 2.5px;
+  }
+  .HeaderTodoComplete {
+    grid-area: 3 / 1 / 4 / 3;
+    display: block;
+    place-self: center;
+    width: 60%;
+  }
+}
+
+@include media-up((md-sm)) {
+  .HeaderDash {
+    display: grid;
+    grid-template: 1fr 0.5fr 0.7fr 1fr / 10% 40% 40% 10%;
+    grid-area: 1/ 1/ 3 /4;
+    .frontBackground {
+      height: 35vh;
+    }
+    .HeaderTodo {
+      grid-area: 1 / 1 / 2 / 3;
+      justify-content: start !important;
+      padding-left: 2rem;
+    }
+    .HeaderDate {
+      grid-area: 1 / 3 / 2 / 5;
+      justify-content: end !important;
+      padding-right: 2rem;
+    }
+    .HeaderUser {
+      grid-area: 2 / 2 / 3 / 4;
+    }
+    .HeaderTodoComplete {
+      width: 60%;
+      display: block;
+      place-self: center;
+      grid-area: 3 / 2 / 4 / 4;
+      div {
+        div {
+          height: 1.25vh !important;
+        }
+      }
+    }
+  }
+  @include media-up((md-md)) {
+    .HeaderDash {
+      .HeaderTodoComplete {
+        width: 50%;
+        div {
+          div {
+            height: 1.5vh !important;
+          }
+        }
+      }
+    }
+  }
+  @include media-up((lg)) {
+    .HeaderDash {
+      .HeaderTodoComplete {
+        width: 37.5%;
+        div {
+          div {
+            height: 1.5vh !important;
+          }
+        }
+      }
+    }
+  }
+  @include media-up((lg-lg)) {
+    .HeaderDash {
+      .HeaderTodoComplete {
+        width: 31.5%;
+        div {
+          div {
+            height: 1.75vh !important;
+          }
+        }
+      }
+    }
+  }
+}

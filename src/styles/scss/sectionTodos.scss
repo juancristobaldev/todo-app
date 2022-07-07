@@ -1,0 +1,23 @@
+$breakpoints: (
+  sm: 300px,
+  md-sm: 500px,
+  md: 768px,
+  md-md: 900px,
+  lg: 1024,
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+}
+section.sectionTodos {
+  overflow: auto;
+  @include media-up(md-sm) {
+    background-color: white;
+    border-radius: 1%;
+    box-shadow: 2px 2px 12px rgba($color: #000000, $alpha: 0.15);
+    grid-area: 2/2/4/3;
+    z-index: 1;
+  }
+}

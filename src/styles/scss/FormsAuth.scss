@@ -1,0 +1,195 @@
+@mixin displayflexaligncenter {
+  display: flex;
+  align-items: center;
+}
+@mixin displayflexjustifycenter {
+  display: flex;
+  justify-content: center;
+}
+@mixin displayflexjustifyaroundaligncenter {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+@mixin displayflexjustifycontentaligncenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+$breakpoints: (
+  sm: 300px,
+  md-sm: 600px,
+  md: 768px,
+  md-md: 900px,
+  lg: 1224px,
+  lg-lg: 1424px,
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (max-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+}
+
+.sectionFormLogin {
+  @include displayflexjustifycontentaligncenter();
+  @include media-up(md-sm) {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template: 20vh 80vh / 100%;
+    .formLogin {
+      grid-template: 10vh 10vh repeat(3, 1.25fr) 5vh / 80% !important;
+      margin: 0% 7.5%;
+      height: 100% !important;
+      width: 85% !important;
+      background-color: white;
+      border-radius: 0.5rem 0.5rem 0rem 0rem;
+      box-shadow: 1px 1px 10px rgba($color: #000000, $alpha: 0.25);
+    }
+    .divDes {
+      align-self: center;
+      padding-left: 5%;
+      .todoApp {
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        letter-spacing: 4px;
+        font-weight: bold;
+      }
+    }
+    .formRegister {
+      background-color: white;
+      width: 85% !important;
+      height: 100% !important;
+      margin: 0 7.5%;
+      box-shadow: 2px 2px 12px rgba($color: #000000, $alpha: 0.5);
+    }
+    form {
+      .divTitle {
+        font-size: 1rem !important;
+        grid-area: 2 / 1 / 3 /2;
+      }
+      .divUser {
+        grid-area: 3 / 1 / 4 /2;
+      }
+      .divPass {
+        grid-area: 4 / 1 / 5 /2;
+      }
+      .divButtons {
+        grid-area: 5 / 1 / 6 /2;
+      }
+    }
+  }
+  @include media-up(lg) {
+    form.formRegister {
+      grid-template: 10% 15% 15% 15% 15% 7.5% 15% / 80% !important;
+      height: 100%;
+    }
+  }
+  form.formLogin,
+  form.formRegister {
+    width: 80%;
+    height: 80%;
+    display: grid;
+    place-content: center;
+    transition: 1s;
+    animation: fade 1s;
+  }
+  form.formLogin {
+    grid-template: 10% 15% 15% 15% 15% 7.5% 15% / 80% !important;
+    .divButtons {
+      .buttonLogin {
+        background-color: #21d4fd;
+        background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
+        color: white;
+      }
+    }
+  }
+  form.formRegister {
+    grid-template: 10% 15% 15% 15% 15% 7.5% 15% / 60%;
+    .themes {
+      .themeOne {
+        display: block;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #5fa1fa;
+      }
+    }
+    .divTitle {
+      grid-area: 1 / 1 / 2 / 2;
+    }
+    .divButtons {
+      grid-area: 7/1/8/2;
+      .buttonRegister {
+        color: white;
+        background-color: #21d4fd;
+        background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
+      }
+    }
+  }
+  form {
+    .divTitle {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.25rem;
+      grid-area: 2 / 1 / 3 /2;
+      justify-content: center;
+      div {
+        margin-top: 10px;
+        color: red;
+      }
+    }
+    .divUser {
+      grid-area: 3 / 1 / 4 /2;
+    }
+    .divPass {
+      grid-area: 4 / 1 / 5/2;
+    }
+    .divButtons {
+      grid-area: 5 / 1 / 6 / 2;
+    }
+    .divInput {
+      @include displayflexjustifycenter();
+      flex-direction: column;
+      label {
+        font-size: 1rem;
+      }
+      input {
+        margin-top: 1rem;
+        padding: 0.5rem 0rem;
+        padding-left: 0.5rem;
+        &:focus {
+          padding-left: 0.5rem;
+        }
+      }
+    }
+
+    .divButtons {
+      @include displayflexjustifyaroundaligncenter();
+      button {
+        box-shadow: 2px 2px 6px rgba($color: #000000, $alpha: 0.25);
+        border: 0;
+        transition: 0.5s;
+      }
+      button:hover {
+        transform: scale(1.1);
+      }
+      .buttonLogin,
+      .buttonRegister {
+        width: 45%;
+        height: 45%;
+      }
+    }
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}

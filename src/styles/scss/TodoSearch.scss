@@ -1,0 +1,40 @@
+$breakpoints: (
+  sm: 300px,
+  md-sm: 500px,
+  md: 768px,
+  md-md: 900px,
+  lg: 1024,
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+}
+
+.todoSearchDiv {
+  display: grid;
+  grid-template: 100% / 100%;
+  justify-content: center;
+  align-items: center;
+  .divInput {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    input {
+      border: 0;
+      background: rgba(32, 87, 209, 0.25);
+      width: 90%;
+      height: 30%;
+      outline: none;
+      color: black;
+      padding: 0.5rem;
+      text-align: center;
+
+      &::placeholder {
+        color: rgba($color: #000000, $alpha: 0.5);
+      }
+    }
+  }
+}
