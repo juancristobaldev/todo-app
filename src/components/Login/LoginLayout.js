@@ -1,6 +1,6 @@
 import React from "react";
-import Main from "../Main/Main";
-import Section from "../Section/Section";
+import Main from "../Main";
+import Section from "../Section";
 import '../../styles/scss/Login.scss';
 
 const LoginLayout = ({ children,width }) => {

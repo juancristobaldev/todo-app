@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
-import '../../styles/App.css';
-import { TodoContext } from '../../context/TodoContext/TodoContext';
-import TodoCounter from '../TodoCounter/TodoCounter';
-import TodoSearch from '../TodoSearch/TodoSearch';
-import TodoList from '../TodoList/TodoList';
-import TodoItem from '../TodoItem/TodoItem';
-import CreateTodoButton from '../CreateTodoButton/CreateTodoButton';
-import DashBoard from  '../DashBoard/DashBoard';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
-import { Modal } from '../Modal';
-import TodoForm from '../TodoForm';
+import '../styles/App.css';
+import TodoCounter from './TodoCounter';
+import TodoSearch from './TodoSearch';
+import TodoList from './TodoList';
+import TodoItem from './TodoItem';
+import CreateTodoButton from './CreateTodoButton';
+import DashBoard from  './DashBoard';
+import Main from './Main';
+import Footer from './Footer';
+import { Modal } from './Modal';
+import TodoForm from './TodoForm';
+import { TodoContext } from '../context/TodoContext/TodoContext';
 
 const TodoApp = () => {
     const 

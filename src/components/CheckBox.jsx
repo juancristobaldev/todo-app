@@ -1,5 +1,5 @@
 import {React} from "react";
-import '../../styles/scss/checkbox.scss';
+import '../styles/scss/checkbox.scss';
 import {FaCheck} from 'react-icons/fa'
 
 export default function CheckBox(props){

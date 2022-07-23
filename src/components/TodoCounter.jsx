@@ -1,5 +1,5 @@
 import React from "react";
-import { TodoContext } from "../../context/TodoContext/TodoContext";
+import { TodoContext } from "../context/TodoContext/TodoContext";
 
 export default function TodoCounter(){   
     

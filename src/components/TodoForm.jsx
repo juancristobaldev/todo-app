@@ -1,6 +1,6 @@
 import React from "react";
-import { TodoContext } from "../../context/TodoContext/TodoContext";
-import '../../styles/scss/formModal.scss';
+import { TodoContext } from "../context/TodoContext/TodoContext";
+import '../styles/scss/formModal.scss';
 
 export default function TodoForm(){
     const [textArea,setTextArea] = React.useState('')
@@ -15,7 +15,6 @@ export default function TodoForm(){
     const onChange = (e) => {
         setTextArea(e.target.value)
         setErrorForm(false)
-        
     }
 
     const onCancel = (event) => {

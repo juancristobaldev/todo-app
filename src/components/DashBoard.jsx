@@ -1,6 +1,5 @@
 import React from "react";
-import { TodoContext } from '../../context/TodoContext/TodoContext';
-import '../../styles/scss/DashBoard.scss';
+import '../styles/scss/DashBoard.scss';
 
 let hoy = new Date()
 

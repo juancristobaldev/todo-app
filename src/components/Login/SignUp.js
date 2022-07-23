@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FormRegister from "./Forms/FormRegister";
-import LoginLayout from "../layouts/LoginLayout";
+import LoginLayout from "./LoginLayout";
 
 import '../../styles/scss/Login.scss';
 
