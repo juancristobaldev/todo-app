@@ -1,67 +1,65 @@
-import React, { useState } from "react";
-import FormLogin from "./Forms/FormLogin";
-import LoginLayout from "./LoginLayout";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { USER_SIGN_IN } from '../../data/mutations';
+import FormLogin from './Forms/FormLogin';
+import LoginLayout from './LoginLayout';
 
 import '../../styles/scss/Login.scss';
 
+export default function SignIn() {
+  const [width, setWidth] = useState(window.innerWidth);
 
-export default function SignIn(){
-    const [width,setWidth] = useState(window.innerWidth)
-    const [valueForm, setValueForm] = useState({
-        user:'',
-        name:'',
-        pass:'',
-        passConfirm:'',
-        
+  const [loadingForm, setLoadingForm] = useState(false);
+
+  const [variables, setVariables] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleVariables = (e) => {
+    setVariables({ ...variables, [e.target.name]: e.target.value });
+  };
+
+  const [userSignIn] = useMutation(USER_SIGN_IN);
+
+  const windowWidthChange = () => {
+    setWidth(window.innerWidth);
+  };
+
+  window.addEventListener('resize', () => {
+    windowWidthChange();
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingForm(true);
+    await userSignIn({
+      variables: {
+        input: {
+          ...variables,
+        },
+      },
+    }).then( async ({data }) => {
+      const { errors, success, token } = data.userSignIn;
+      if( success) {
+        console.log(token);
+      }
+      if(errors) {
+        console.log(errors);
+      }
+      setLoadingForm(false);
     })
+  };
 
-    const [error,setError] = useState(
-        {
-            error:false,
-            type:''
-        }
-    )
-
-    const windowWidthChange = () => {
-        setWidth(window.innerWidth)
-    }
-    
-    window.addEventListener('resize', () => {
-        windowWidthChange()
-    })
-    
-
-    const formDates = (event,input) => {
-        const object = {...valueForm}
-        object[input] = event.target.value
-        setValueForm(object)
-        setError({error:false})
-    }
-
-    const onLogin = (event) => {
-        event.preventDefault()
-        /* const formData = JSON.parse(localStorage.getItem('formData'))
-        if(valueForm.user === formData.user && valueForm.pass === formData.pass){
-            console.log('Login')
-           /* window.location.reload() 
-        }else{
-            setError({
-                error:true,
-                type:'Usuario y/ó contraseña incorrecta'
-            })
-        }*/
-    }
-
-    return(
-        <LoginLayout
+  return (
+    <LoginLayout width={width}>
+      <FormLogin
+        variables={variables}
+        handleVariables={handleVariables}
+        handleSubmit={handleSubmit}
         width={width}
-        >
-            <FormLogin
-            formDates={formDates}
-            onLogin={onLogin}
-            width={width}
-            error={error}
-            />
-        </LoginLayout>
-    )
+        loadingForm={loadingForm}
+      />
+    </LoginLayout>
+  );
 }
