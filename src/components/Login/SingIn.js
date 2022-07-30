@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SessionContext } from '../../context/SessionContext';
 import { useMutation } from '@apollo/client';
 import { USER_SIGN_IN } from '../../data/mutations';
 import FormLogin from './Forms/FormLogin';
 import LoginLayout from './LoginLayout';
+import { SESSION_TOKEN } from '../../constants';
 
 import '../../styles/scss/Login.scss';
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const { refetchSession } = useContext(SessionContext);
   const [width, setWidth] = useState(window.innerWidth);
 
   const [loadingForm, setLoadingForm] = useState(false);
@@ -42,7 +47,9 @@ export default function SignIn() {
     }).then( async ({data }) => {
       const { errors, success, token } = data.userSignIn;
       if( success) {
-        console.log(token);
+        localStorage.setItem(SESSION_TOKEN, token);
+        await refetchSession();
+        navigate('/');
       }
       if(errors) {
         console.log(errors);
