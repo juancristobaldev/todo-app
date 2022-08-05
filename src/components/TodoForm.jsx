@@ -1,29 +1,58 @@
-import React from "react";
+import { useMutation } from "@apollo/client";
+import React, { useState } from "react";
 import { TodoContext } from "../context/TodoContext/TodoContext";
+import { TASK_CREATE } from "../data/mutations";
 import '../styles/scss/formModal.scss';
 
-export default function TodoForm(){
-    const [textArea,setTextArea] = React.useState('')
+
+export default function TodoForm({updateModal}){
+
     const {
-        toSomething,
         openModal,
         setOpenModal,
-        errorForm,
-        setErrorForm,
     } = React.useContext(TodoContext)
 
+    const [variables,setVariables] = useState({
+        name:''
+    })
+
+    const [taskCreate] = useMutation(TASK_CREATE)
+
     const onChange = (e) => {
-        setTextArea(e.target.value)
-        setErrorForm(false)
+        setVariables({...variables, [e.target.name]: e.target.value})
     }
 
     const onCancel = (event) => {
         event.preventDefault()
         setOpenModal(!openModal)
     }
-    const onSubmit = (event) => {
+    const onSubmit =  async event => {
         event.preventDefault()
-        toSomething(textArea,"add")
+        updateModal({state:true, type:'loading'})
+        await taskCreate({
+            variables: {
+                input: {
+                    ...variables
+                }
+            }
+        }).then( async ({ data }) =>  {
+            setOpenModal(false)
+            const {errors,success} = data.taskCreate
+            if(success){
+                updateModal(
+                        {
+                            state:true, 
+                            type:'success',
+                            message:'Tarea creada con exito',
+                        }
+                    )
+            }
+            if(errors){
+                updateModal({state:false})
+                setOpenModal(true)
+            }
+        }).catch(error => console.log(error))
+        
     }
 
     return(
@@ -32,11 +61,16 @@ export default function TodoForm(){
                 <label>ADD A NEW TASK</label>
                 <div className="divInput">
                     <input
+                        name="name"
                         placeholder="New task"
-                        value={textArea}
+                        value={variables.name}
                         onChange={(e) => onChange(e)}
                     />
-                    {errorForm && <div className="divError"><p>This task already exist</p></div>}
+                    {
+                    <div className="divError">
+                        
+                    </div>
+                    }
                 </div>
                 <div className="divButton">
                     <button
@@ -51,6 +85,7 @@ export default function TodoForm(){
                     <button
                     className="onSubmit"
                     type="submit"
+                    onClick={(e) => onSubmit(e)}
                     >
                         Add
                     </button>

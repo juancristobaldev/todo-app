@@ -25,3 +25,30 @@ export const USER_SIGN_IN = gql`
     }
   }
 `;
+
+export const TASK_CREATE = gql`
+  mutation taskCreate($input: TaskCreateInput!){
+    taskCreate(input: $input){
+      errors
+      success
+    }
+  }
+`
+
+export const TASK_DELETE = gql`
+  mutation taskDelete($input: TaskDeleteInput!){
+    taskDelete(input:$input){
+      errors
+      success
+    }
+  }
+`
+
+export const TASK_UPDATE = gql`
+  mutation taskUpdate($input:TaskUpdateInput!){
+    taskUpdate(input:$input){
+      errors
+      success
+    }
+  }
+`

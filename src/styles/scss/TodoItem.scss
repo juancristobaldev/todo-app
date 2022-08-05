@@ -36,6 +36,11 @@ $breakpoints: (
     span {
       @include displayflexjustifycenter();
       text-decoration: none !important;
+      svg {
+        &:hover {
+          fill: #032c88;
+        }
+      }
     }
     div {
       @include displayflexaligncenter();

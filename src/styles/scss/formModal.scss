@@ -21,6 +21,7 @@ $breakpoints: (
   }
 }
 form.formModal {
+  animation: fade 1s;
   box-shadow: 3px 3px 15px rgba($color: #000000, $alpha: 0.2);
   display: grid;
   grid-template: repeat(3, 10vh) / repeat(2, 50%);
@@ -62,7 +63,9 @@ form.formModal {
     @include dflexcenter();
 
     .onSubmit,
-    .onCancel {
+    .onCancel,
+    .onEdit,
+    .onDelete {
       font-weight: bold;
       font-size: 1rem;
       font-weight: 200;
@@ -70,6 +73,15 @@ form.formModal {
       width: 80%;
       height: 45%;
       transition: 0.75s;
+    }
+
+    .onEdit,
+    .onDelete {
+      color: #032c88;
+      &:hover {
+        color: white;
+        background: #032c88;
+      }
     }
 
     .onCancel {
@@ -83,6 +95,7 @@ form.formModal {
     .onSubmit {
       color: white;
       font-weight: 200;
+      background-color: #032c88;
       &:hover {
         transform: scale(1.05);
       }
@@ -118,5 +131,13 @@ form.formModal {
     width: 30%;
   }
   @include media-up(lg-lg) {
+  }
+}
+@keyframes fade {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
   }
 }

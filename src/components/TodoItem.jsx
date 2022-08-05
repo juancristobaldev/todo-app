@@ -1,13 +1,13 @@
 import React from "react";
 import CheckBox from "./CheckBox";
 import '../styles/scss/TodoItem.scss';
-import { AiOutlineClose } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 
-export default function TodoItem({ onDelete, state, text, onComplete, theme }) {
+export default function TodoItem({ onEdit, state, text, onComplete, theme }) {
     return (
         <div className={`todoItem ${state === 'completed' && 'onComplete'}`}>
             <div className={`nameItem ${state === 'completed' && 'itemDone'}`}>
-                <span className="spanItem" onClick={() => onDelete()}><AiOutlineClose /></span>
+                <span className="spanItem" onClick={() => onEdit()}><AiFillEdit fill="silver"/></span>
                 <div>
                     <p>{text}</p>
                 </div>
