@@ -55,6 +55,11 @@ export const TASK_DELETE = gql`
 export const TASK_UPDATE = gql`
   mutation taskUpdate($input:TaskUpdateInput!){
     taskUpdate(input:$input){
+      task {
+        id
+        name
+        state
+      }
       errors
       success
     }

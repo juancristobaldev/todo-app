@@ -24,7 +24,25 @@ import Loading from './generals/Loading';
 
 const TodoApp = () => {
 
-  const [taskDelete] = useMutation(TASK_DELETE);
+  const [taskDelete] = useMutation(TASK_DELETE, {
+    update: (cache, { data: { taskDelete } }) => {
+      const { success, task } = taskDelete;
+      if (!success) return false;
+
+      const { tasks } = cache.readQuery({
+        query: TASKS,
+        ...(search !== '' && ({ variables: search })),
+      });
+
+      cache.writeQuery({
+        query: TASKS,
+        ...(search !== '' && ({ variables: search })),
+        data: {
+          tasks: tasks.filter((item) => item?.id !== task?.id),
+        }
+      });
+    }
+  });
 
   const [taskUpdate] = useMutation(TASK_UPDATE);
 
