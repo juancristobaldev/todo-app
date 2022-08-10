@@ -9,6 +9,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.js';
 import { SESSION_TOKEN } from './constants.js';
+import { AlertProvider } from './context/AlertContext.js';
 import { SessionProvider } from './context/SessionContext.js';
 import { TodoProvider } from './context/TodoContext/TodoContext.js';
 
@@ -34,7 +35,7 @@ const client = new ApolloClient({
         fields: {
           tasks: {
             merge: true,
-          }
+          },
         },
       },
     },
@@ -49,10 +50,12 @@ const root = createRoot(container);
 
 root.render(
   <ApolloProvider client={client}>
-    <SessionProvider>
-      <TodoProvider>
-        <App />
-      </TodoProvider>
-    </SessionProvider>
+    <AlertProvider>
+      <SessionProvider>
+        <TodoProvider>
+          <App />
+        </TodoProvider>
+      </SessionProvider>
+    </AlertProvider>
   </ApolloProvider>
 );

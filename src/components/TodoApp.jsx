@@ -16,7 +16,6 @@ import TodoForm from './TodoForm';
 import { Container } from './generals/Container';
 
 import { TodoContext } from '../context/TodoContext/TodoContext';
-import { ME } from '../data/queries';
 import { TASK_DELETE, TASK_UPDATE } from '../data/mutations';
 import TodoUpdate from './TodoUpdate';
 import Alert from './generals/Alert';
@@ -24,6 +23,58 @@ import Loading from './generals/Loading';
 
 const TodoApp = () => {
 
+  const
+    {
+      toSomething,
+      openModal,
+      windowWidthChange,
+      innerWidth,
+    } = useContext(TodoContext);
+
+
+  const [variables, setVariables] = useState({
+    search: '',
+  });
+
+  const [variablesEdit, setVariablesEdit] = useState({
+    id: null,
+    name: '',
+    slug: null,
+    state: null
+  });
+
+  const [modal, updateModal] = useState({
+    state: false,
+    type: null,
+    message: '',
+    elementName: ''
+  });
+
+  const { search } = variables;
+
+
+  const handleVariables = (e) => {
+    setVariables({ ...variables, [e.target.name]: e.target.value });
+  }
+
+  const handleVariablesEdit = (e, todo) => {
+    setVariablesEdit(
+      {
+        ...variablesEdit,
+        [e.target.name]: e.target.value,
+        id: todo.id,
+        slug: todo.name,
+        state: todo.state
+      }
+    )
+  }
+
+  // QUERIES
+  const { data, loading: loadingTasks } = useQuery(TASKS, {
+    ...(search !== '' && { variables: { search } })
+  });
+
+  // MUTATIONS
   const [taskDelete] = useMutation(TASK_DELETE, {
     update: (cache, { data: { taskDelete } }) => {
       const { success, task } = taskDelete;
@@ -46,57 +97,7 @@ const TodoApp = () => {
 
   const [taskUpdate] = useMutation(TASK_UPDATE);
 
-  const
-    {
-      toSomething,
-      openModal,
-      windowWidthChange,
-      innerWidth,
-    } = useContext(TodoContext);
-
-
-  const [variables, setVariables] = useState({
-    search: '',
-  })
-  const [variablesEdit, setVariablesEdit] = useState({
-    id: null,
-    name: '',
-    slug: null,
-    state: null
-  })
-
-  const [modal, updateModal] = useState({
-    state: false,
-    type: null,
-    message: '',
-    elementName: ''
-  })
-
-  const { search } = variables;
-
-  const { data, loading: loadingTasks } = useQuery(TASKS, {
-    ...(search !== '' && { variables: { search } })
-  });
-
-  window.addEventListener('resize', () => {
-    windowWidthChange()
-  });
-
-  const handleVariables = (e) => {
-    setVariables({ ...variables, [e.target.name]: e.target.value });
-  }
-
-  const handleVariablesEdit = (e, todo) => {
-    setVariablesEdit(
-      {
-        ...variablesEdit,
-        [e.target.name]: e.target.value,
-        id: todo.id,
-        slug: todo.name,
-        state: todo.state
-      }
-    )
-  }
+  // EVENTS
 
   const onDelete = async (event, todo) => {
     event.preventDefault()
@@ -139,8 +140,11 @@ const TodoApp = () => {
         }
       )
     })
+  };
 
-  }
+  window.addEventListener('resize', () => {
+    windowWidthChange()
+  });
 
   return (
     <Main>
@@ -190,7 +194,6 @@ const TodoApp = () => {
       {openModal && (
         <Modal>
           <TodoForm
-            updateModal={updateModal}
             search={search} />
         </Modal>
       )}
