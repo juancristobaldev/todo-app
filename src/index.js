@@ -2,12 +2,11 @@ import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache,
-  gql,
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { App } from './App.js';
 import { SESSION_TOKEN } from './constants.js';
 import { SessionProvider } from './context/SessionContext.js';
@@ -30,6 +29,15 @@ const authLink = setContext((_, { headers }) => {
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
+    typePolicies: {
+      me: {
+        fields: {
+          tasks: {
+            merge: true,
+          }
+        },
+      },
+    },
     fetchOptions: {
       credentials: 'include',
     },
@@ -37,16 +45,14 @@ const client = new ApolloClient({
 });
 
 const container = document.getElementById('root');
-render(
+const root = createRoot(container);
+
+root.render(
   <ApolloProvider client={client}>
     <SessionProvider>
       <TodoProvider>
         <App />
       </TodoProvider>
     </SessionProvider>
-  </ApolloProvider>,
-  container,
-  () => {
-    console.log('rendered');
-  }
+  </ApolloProvider>
 );

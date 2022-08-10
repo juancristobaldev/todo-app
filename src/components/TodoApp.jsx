@@ -13,21 +13,20 @@ import Main from './Main';
 import Footer from './Footer';
 import { Modal } from './Modal';
 import TodoForm from './TodoForm';
-import { Text } from './generals/Text';
-import { Button } from './generals/Button';
 import { Container } from './generals/Container';
 
-import ReactLoading from "react-loading"
-
 import { TodoContext } from '../context/TodoContext/TodoContext';
+import { ME } from '../data/queries';
 import { TASK_DELETE, TASK_UPDATE } from '../data/mutations';
+import TodoUpdate from './TodoUpdate';
+import Alert from './generals/Alert';
+import Loading from './generals/Loading';
 
 const TodoApp = () => {
 
-  const [ taskDelete ] = useMutation(TASK_DELETE)
+  const [taskDelete] = useMutation(TASK_DELETE);
 
-  const [ taskUpdate ] = useMutation(TASK_UPDATE)
-
+  const [taskUpdate] = useMutation(TASK_UPDATE);
 
   const
     {
@@ -37,31 +36,28 @@ const TodoApp = () => {
       innerWidth,
     } = useContext(TodoContext);
 
-    
+
   const [variables, setVariables] = useState({
     search: '',
   })
   const [variablesEdit, setVariablesEdit] = useState({
-    id:null,
+    id: null,
     name: '',
-    slug:null,
-    state:null
+    slug: null,
+    state: null
   })
 
-  console.log(variablesEdit)
-  const [modal,updateModal] = useState({
-    state:false,
-    type:null,
-    message:'',
-    elementName:''
+  const [modal, updateModal] = useState({
+    state: false,
+    type: null,
+    message: '',
+    elementName: ''
   })
 
   const { search } = variables;
 
   const { data, loading: loadingTasks } = useQuery(TASKS, {
-    variables: {
-      search
-    }
+    ...(search !== '' && { variables: { search } })
   });
 
   window.addEventListener('resize', () => {
@@ -72,58 +68,56 @@ const TodoApp = () => {
     setVariables({ ...variables, [e.target.name]: e.target.value });
   }
 
-  const handleVariablesEdit = (e,todo) => {
+  const handleVariablesEdit = (e, todo) => {
     setVariablesEdit(
-      {...variablesEdit,
-        [e.target.name]:e.target.value,
-        id:todo.id,
-        slug:todo.name,
-        state:todo.state
+      {
+        ...variablesEdit,
+        [e.target.name]: e.target.value,
+        id: todo.id,
+        slug: todo.name,
+        state: todo.state
       }
     )
   }
 
-  const onDelete = async (event,todo) => {
+  const onDelete = async (event, todo) => {
     event.preventDefault()
-    updateModal({state:true, type:"loading"})
+    updateModal({ state: true, type: "loading" })
     await taskDelete({
       variables: {
-        input:{
-          id:todo.id,
-          slug:todo.name
+        input: {
+          id: todo.id,
+          slug: todo.name
         }
       }
-    }).then(async ({data}) => {
-      const {errors,success} = data.taskDelete
-      if(success) updateModal(
+    }).then(async ({ data }) => {
+      const { success } = data.taskDelete;
+      if (success) updateModal(
         {
-            state:true, 
-            type:'success',
-            message:'Tarea eliminada con exito',
+          state: true,
+          type: 'success',
+          message: 'Tarea eliminada con exito',
         }
       )
-      if(errors){
-
-      }
     })
-  } 
+  }
 
   const onEdit = async (event) => {
     event.preventDefault()
-    updateModal({state:true,type:"loading"})
+    updateModal({ state: true, type: "loading" })
     await taskUpdate({
-      variables:{
-        input:{
+      variables: {
+        input: {
           ...variablesEdit
         }
       }
-    }).then( async ({ data }) => {
-      const {errors,success} = data.taskUpdate
-      if(success) updateModal(
+    }).then(async ({ data }) => {
+      const { success } = data.taskUpdate
+      if (success) updateModal(
         {
-            state:true, 
-            type:'success',
-            message:'Tarea editada con exito',
+          state: true,
+          type: 'success',
+          message: 'Tarea editada con exito',
         }
       )
     })
@@ -138,11 +132,11 @@ const TodoApp = () => {
         <TodoCounter />
       </DashBoard>
       {innerWidth <= 500 &&
-          <TodoSearch
-            handleVariables={handleVariables}
-            search={search}
-          />
-        }
+        <TodoSearch
+          handleVariables={handleVariables}
+          search={search}
+        />
+      }
       <TodoList>
         {innerWidth >= 500 &&
           <TodoSearch
@@ -162,7 +156,7 @@ const TodoApp = () => {
                 key={todo.id}
                 text={todo.name}
                 completed={todo.state}
-                onEdit={() => updateModal({state:true,type:"edit",todo:todo})}
+                onEdit={() => updateModal({ state: true, type: "edit", todo: todo })}
                 onComplete={() => toSomething(todo.text, "check")}
               />
             ))}
@@ -177,70 +171,34 @@ const TodoApp = () => {
       </TodoList>
       {openModal && (
         <Modal>
-          <TodoForm 
-          updateModal={updateModal} />
+          <TodoForm
+            updateModal={updateModal}
+            search={search} />
         </Modal>
       )}
       {
-                modal.state === true &&
-                <Modal>
-                    <Container className="back"
-                    onClick={modal.type === "success" ? () => updateModal({state:false}) : false}
-                    >
-                        {modal.type === "loading" && 
-                            <Container className="modalLoading">
-                                <ReactLoading type="spokes"/>
-                            </Container>
-                        }
-                        {modal.type === "success" && 
-                            <Container className="modal">
-                                <Text
-                                className={'text'}>
-                                  🎉
-                                  <br/>
-                                  {modal.message}
-                                </Text>
-                            </Container>
-                        }
-                        {modal.type === "edit" && 
-                          <form
-                          className={'formModal'}
-                          >
-                            <label>
-                              EDITAR TAREA
-                            </label>
-                            <Container
-                            className={'divInput'}
-                            >
-                              <input 
-                              name='name'
-                              onChange={event => handleVariablesEdit(event,modal.todo)}
-                              placeholder={modal.todo.name}
-                              />
-                            </Container>
-                            <Container 
-                            className={'divButton'}
-                            >
-                              <Button
-                              className={'onEdit'}
-                              onClick={event => onEdit(event)}
-                              textButton={'Editar'}
-                              />
-                            </Container>
-                            <Container
-                            className={'divButton'}
-                            >
-                              <Button
-                                className={'onDelete'}
-                                onClick={event => onDelete(event,modal.todo)}
-                                textButton={'Eliminar tarea'}
-                              />
-                            </Container>
-                          </form>
-                        }
-                    </Container>
-                </Modal>
-          }
+        modal.state &&
+        <Modal>
+          <Container className="back"
+            onClick={modal.type === "success" ? () => updateModal({ state: false }) : false}
+          >
+            {modal.type === "loading" &&
+              <Loading />
+            }
+            {modal.type === "success" &&
+              <Alert message={modal.message} />
+            }
+            {modal.type === "edit" &&
+              <TodoUpdate
+                modal={modal}
+                handleVariablesEdit={handleVariablesEdit}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            }
+          </Container>
+        </Modal>
+      }
       <CreateTodoButton />
       <Footer />
     </Main>

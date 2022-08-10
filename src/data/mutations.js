@@ -29,6 +29,11 @@ export const USER_SIGN_IN = gql`
 export const TASK_CREATE = gql`
   mutation taskCreate($input: TaskCreateInput!){
     taskCreate(input: $input){
+      task {
+        id
+        name
+        state
+      }
       errors
       success
     }
@@ -38,6 +43,9 @@ export const TASK_CREATE = gql`
 export const TASK_DELETE = gql`
   mutation taskDelete($input: TaskDeleteInput!){
     taskDelete(input:$input){
+      task {
+        id
+      }
       errors
       success
     }

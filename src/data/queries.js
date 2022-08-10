@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 export const ME = gql`
   query me {
     me {
+      id
       fullName
       firstName
       lastName
@@ -10,18 +11,17 @@ export const ME = gql`
         name
         id
         state
-        slug
       }
     }
   }
 `;
 
 export const TASKS = gql`
-  query tasks($search: String) {
-    tasks(search: $search) {
-      id
-      name
-      state
-    }
+query tasks($search: String) {
+  tasks(search: $search) {
+    id
+    name
+    state
   }
+}
 `;
